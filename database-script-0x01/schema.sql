@@ -14,7 +14,7 @@ CREATE INDEX idx_users_user_id ON users(user_id);
 
 
 CREATE TABLE properties(
-    property_id PRIMARY KEY DEFAULT gen_random_uuid(),
+    property_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     host_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(255) NOT NULL,
@@ -30,8 +30,8 @@ CREATE TABLE booking(
     user_id UUID NOT NULL REFERENCES users(user_id),
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    total_price DECIMA(10,2) NOT NULL,
-    status VARCHAR(10) NOT NULL CHECK(role IN('pending', 'confirmed', 'canceled')),
+    total_price DECIMAL(10,2) NOT NULL,
+    status VARCHAR(10) NOT NULL CHECK(status IN('pending', 'confirmed', 'canceled')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 
@@ -42,8 +42,8 @@ CREATE INDEX idx_booking_booking_id ON users(user_id)
 CREATE TABLE payments(
     payment_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     booking_id  UUID NOT NULL REFERENCES booking(booking_id) ON DELETE CASCADE,
-    amount DECIMAL(10,2) NOT NULL
-    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    amount DECIMAL(10,2) NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     payment_method VARCHAR(15) NOT NULL CHECK(payment_method IN ('credit_card', 'paypal', 'stripe'))
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE review(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_review_property_id ON review(prperty_id);
+CREATE INDEX idx_review_property_id ON review(property_id);
 CREATE INDEX idx_review_user_id ON review(user_id);
 
 CREATE TABLE messages(
@@ -70,5 +70,6 @@ CREATE TABLE messages(
 
 CREATE INDEX idx_messages_sender_id ON messages(sender_id);
 CREATE INDEX idx_messages_recipient_id ON messages(recipient_id);
+
 
 
