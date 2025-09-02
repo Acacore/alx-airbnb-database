@@ -9,10 +9,15 @@ HAVING COUNT(booking)
 ORDER BY COUNT(booking) DESC)
 
 -- Use a window function (ROW_NUMBER, RANK) to rank properties based on the total number of bookings they have received.
-SELECT 
-    property_id,
-    COUNT(property_id) AS total_bookings,
-    RANK() OVER (ORDER BY COUNT(property_id) DESC) AS booking_rank
-FROM booking
-GROUP BY property_id
+-- aggregations_and_window_functions.sql
+SELECT
+  property_id,
+  total_bookings,
+  ROW_NUMBER() OVER (ORDER BY total_bookings DESC) AS booking_rank
+FROM (
+  SELECT property_id,
+         COUNT(*) AS total_bookings
+  FROM booking
+  GROUP BY property_id
+) AS aggregated
 ORDER BY total_bookings DESC;
