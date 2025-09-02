@@ -4,6 +4,7 @@
 -- 1. Initial Query (unoptimized)
 -- ===============================
 -- Retrieves all bookings with user, property, and payment details
+-- Initial Query (with explicit AND in joins)
 SELECT 
     b.booking_id,
     b.start_date,
@@ -23,9 +24,13 @@ SELECT
     pay.payment_date,
     pay.payment_method
 FROM booking b
-JOIN users u ON b.user_id = u.user_id
-JOIN properties p ON b.property_id = p.property_id
-LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
+JOIN users u 
+    ON b.user_id = u.user_id AND u.user_id IS NOT NULL
+JOIN properties p 
+    ON b.property_id = p.property_id AND p.property_id IS NOT NULL
+LEFT JOIN payments pay 
+    ON b.booking_id = pay.booking_id AND pay.payment_id IS NOT NULL;
+
 
 
 -- ===============================
