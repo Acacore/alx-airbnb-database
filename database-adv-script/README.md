@@ -96,6 +96,7 @@ WHERE property_id IN (
     GROUP BY property_id
     HAVING AVG(rating) > 4.0
 );
+```
 Explanation
 The goal is to find all properties where the average review rating is greater than 4.0.
 
@@ -114,3 +115,28 @@ To highlight top-rated properties on a booking platform.
 
 Useful for generating "Top Properties" lists.
 
+
+# SQL Query Documentation
+
+This document explains two queries:  
+1. Counting bookings per user.  
+2. Ranking properties based on the number of bookings using window functions.  
+
+---
+
+## 1. Find the Total Number of Bookings by Each User
+
+```sql
+SELECT user_id, COUNT(*) AS total_bookings
+FROM booking
+GROUP BY user_id
+ORDER BY total_bookings DESC;
+```
+Explanation
+The query counts how many bookings each user has made.
+
+COUNT(*) → Counts the total bookings for each user_id.
+
+GROUP BY user_id → Groups rows so that the count is calculated per user.
+
+ORDER BY total_bookings DESC → Sorts results, showing the most active users first.
