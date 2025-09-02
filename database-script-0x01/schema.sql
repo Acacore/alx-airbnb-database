@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users(
     role VARCHAR(10) NOT NULL CHECK(role IN('guest', 'host', 'admin')),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_users_user_id ON users(user_id);
+CREATE INDEX idx_users_users_email ON users(email);
 
 CREATE TABLE IF NOT EXISTS properties(
     property_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -23,8 +23,11 @@ CREATE TABLE IF NOT EXISTS properties(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_properties_user_id ON properties(user_id);
+CREATE INDEX idx_properties_property_id ON properties(property_id);
 CREATE INDEX idx_properties_host_id ON properties(host_id);
+CREATE INDEX idx_properties_property_id ON properties(property_id);
+CREATE INDEX idx_properties_name ON properties(name);
+
 
 -- Create a function that updates `updated_at` automatically
 CREATE OR REPLACE FUNCTION update_timestamp()
@@ -54,6 +57,8 @@ CREATE TABLE IF NOT EXISTS booking(
 
 CREATE INDEX idx_booking_property_id ON booking(property_id);
 CREATE INDEX idx_booking_user_id ON booking(user_id);
+CREATE INDEX idx_booking_start_date ON booking(start_date);
+CREATE INDEX idx_booking_end_date ON booking(end_date);
 
 
 CREATE TABLE IF NOT EXISTS payments(
@@ -63,7 +68,8 @@ CREATE TABLE IF NOT EXISTS payments(
     payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     payment_method VARCHAR(15) NOT NULL CHECK(payment_method IN ('credit_card', 'paypal', 'stripe'))
 );
-CREATE INDEX idx_payment_user_id ON payment(booking_id);
+CREATE INDEX idx_payment_payment_id ON payment(payment_id);
+CREATE INDEX idx_payment_booking_id ON payment(booking_id);
 
 CREATE TABLE IF NOT EXISTS review(
     review_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
