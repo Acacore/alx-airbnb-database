@@ -12,6 +12,7 @@ ON properties.property_id = review.property_id
 ORDER BY review.rating DESC;
 
 
+
 -- Query using a FULL OUTER JOIN to retrieve all users and all bookings, even if the user has no booking or a booking is not linked to a user.
 SELECT *
 FROM users

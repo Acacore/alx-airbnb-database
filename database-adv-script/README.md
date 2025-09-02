@@ -78,3 +78,39 @@ All users and all bookings are included in the result set.
 
 Missing relationships are represented with NULL values.
 
+
+# SQL Subquery Documentation
+
+This document provides professional explanations and examples for SQL queries that use **subqueries** and **correlated subqueries**. Each query includes its purpose, explanation, and example output.
+
+---
+
+## 1. Find Properties with Average Rating Greater Than 4.0
+
+```sql
+SELECT *
+FROM properties
+WHERE property_id IN (
+    SELECT property_id
+    FROM review
+    GROUP BY property_id
+    HAVING AVG(rating) > 4.0
+);
+Explanation
+The goal is to find all properties where the average review rating is greater than 4.0.
+
+We use a subquery inside the WHERE clause:
+
+The subquery groups reviews by property_id.
+
+It calculates the average rating for each property using AVG(rating).
+
+The HAVING clause filters only those properties with an average rating greater than 4.0.
+
+The outer query retrieves all property details (*) from the properties table where the property ID matches the result of the subquery.
+
+Use Case
+To highlight top-rated properties on a booking platform.
+
+Useful for generating "Top Properties" lists.
+
